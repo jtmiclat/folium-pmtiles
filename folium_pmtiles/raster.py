@@ -13,7 +13,7 @@ class PMTilesRaster(JSCSSMixin, Layer):
             {% macro script(this, kwargs) -%}
 
 
-            var {{ this.get_name() }} = new pmtiles.PMTiles('example.pmtiles')
+            var {{ this.get_name() }} = new pmtiles.PMTiles('{{ this.url }}')
             pmtiles.leafletRasterLayer({{ this.get_name() }}).addTo({{ this._parent.get_name() }})
 
             {%- endmacro %}
