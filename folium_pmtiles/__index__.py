@@ -1,1 +1,1 @@
-from PMTilesVector import PMTilesVector # noqa
+from PMTilesVector import PMTilesVector  # noqa

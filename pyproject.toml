@@ -15,6 +15,7 @@ folium = "^0.14.0"
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
 black = "^23.1.0"
+pre-commit = "^3.0.4"
 
 [build-system]
 requires = ["poetry-core"]
