@@ -27,7 +27,7 @@ class PMTilesVector(JSCSSMixin, Layer):
     default_js = [
         (
             "protomaps",
-            "https://unpkg.com/protomaps@latest/dist/protomaps.min.js",
+            "https://unpkg.com/protomaps@1.23.0/dist/protomaps.min.js",
         )
     ]
 
