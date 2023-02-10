@@ -15,8 +15,10 @@ class PMTilesVector(JSCSSMixin, Layer):
 
             var {{ this.get_name() }} = protomaps.leafletLayer(
                 {
-                    "url":  '{{ this.url }}'
-                })
+                    "url":  '{{ this.url }}',
+                    ...{{ this.options if this.options is string else this.options|tojson }}
+                }
+            )
             {{ this.get_name() }}.addTo({{ this._parent.get_name() }})
             {%- endmacro %}
             """
@@ -39,3 +41,5 @@ class PMTilesVector(JSCSSMixin, Layer):
 
         if options is not None:
             self.options = options
+        else:
+            self.options = {}

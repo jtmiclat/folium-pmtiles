@@ -14,7 +14,10 @@ class PMTilesRaster(JSCSSMixin, Layer):
 
 
             var {{ this.get_name() }} = new pmtiles.PMTiles('{{ this.url }}')
-            pmtiles.leafletRasterLayer({{ this.get_name() }}).addTo({{ this._parent.get_name() }})
+            pmtiles.leafletRasterLayer(
+                {{ this.get_name() }},
+                {{ this.options if this.options is string else this.options|tojson }}
+            ).addTo({{ this._parent.get_name() }})
 
             {%- endmacro %}
             """
@@ -37,3 +40,5 @@ class PMTilesRaster(JSCSSMixin, Layer):
 
         if options is not None:
             self.options = options
+        else:
+            self.options = {}
