@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "folium-pmtiles"
+version = "0.1.0"
+description = "Folium Plugin to Support PMTiles"
+authors = ["Jt Miclat <jtmiclat@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "folium_pmtiles"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+folium = "^0.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
