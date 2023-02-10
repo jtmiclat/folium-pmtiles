@@ -2,6 +2,12 @@
 
 ## Basic usage
 
+### Installation
+
+```
+pip install folium folium-pmtiles
+```
+
 ### Vector
 
 ```python
