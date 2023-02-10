@@ -1,4 +1,4 @@
-# Folium Plugin to support PMTiles
+# 🗺️ Folium Plugin to support PMTiles
 
 ## Basic usage
 
@@ -20,4 +20,4 @@ poetry run pre-commit install
 ## TODO:
 
 - [ ] Add styling support
-- [ ] Add Raster for pmtiles
+- [ ] Add Raster support
