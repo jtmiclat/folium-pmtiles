@@ -10,6 +10,13 @@ pmtiles_layer = PMTilesVector("https://protomaps.github.io/PMTiles/protomaps(vec
 m.add_child(pmtiles_layer)
 ```
 
+## Dev Setup
+
+```
+poetry install --with dev
+poetry run pre-commit install
+```
+
 ## TODO:
 
 - [ ] Add styling support
