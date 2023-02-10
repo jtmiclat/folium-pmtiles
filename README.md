@@ -49,8 +49,3 @@ see https://leafletjs.com/reference.html#gridlayer-option for valid options
 poetry install --with dev
 poetry run pre-commit install
 ```
-
-## TODO:
-
-- [ ] Add styling support
-- [ ] Add Raster support
