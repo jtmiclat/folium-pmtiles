@@ -8,7 +8,7 @@
 pip install folium folium-pmtiles
 ```
 ### Usage
-See [examples/](examples/) to see some examples.
+See [example/](example/) to see some examples.
 
 ## Dev Setup
 
