@@ -45,7 +45,7 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
             self.options = {}
 
 
-class PMTilesVector(JSCSSMixin, Layer):
+class PMTilesMapLibreLayer(JSCSSMixin, Layer):
     """Based of
     https://github.com/python-visualization/folium/blob/56d3665fdc9e7280eae1df1262450e53ec4f5a60/folium/plugins/vectorgrid_protobuf.py
     """
@@ -55,23 +55,15 @@ class PMTilesVector(JSCSSMixin, Layer):
             {% macro script(this, kwargs) -%}
             let protocol = new pmtiles.Protocol();
             maplibregl.addProtocol("pmtiles", protocol.tile);
+
            {{ this._parent.get_name() }}.createPane('overlay');
            {{ this._parent.get_name() }}.getPane('overlay').style.zIndex = 650;
            {{ this._parent.get_name() }}.getPane('overlay').style.pointerEvents = 'none';
 
             var {{ this.get_name() }} = L.maplibreGL({
             pane: 'overlay',
-            style: {
-                        version:8,
-                        sources: {
-                            "example_source": {
-                                type: "vector",
-                                url: "pmtiles://" + "{{ this.url }}",
-                            }
-                        },
-                        layers: {{ this.layers|tojson}}
-                    }
-                }).addTo({{ this._parent.get_name() }});
+            style: {{ this.style|tojson}}
+            }).addTo({{ this._parent.get_name() }});
 
             {%- endmacro %}
             """
@@ -89,7 +81,7 @@ class PMTilesVector(JSCSSMixin, Layer):
         ),
     ]
 
-    def __init__(self, url, layer_name=None, layers=None):
+    def __init__(self, url, layer_name=None, style=None):
         self.layer_name = layer_name if layer_name else "PMTilesVector"
 
         super().__init__(name=self.layer_name)
@@ -97,7 +89,7 @@ class PMTilesVector(JSCSSMixin, Layer):
         self.url = url
         self._name = "PMTilesVector"
 
-        if layers is not None:
-            self.layers = layers
+        if style is not None:
+            self.style = style
         else:
-            self.layers = []
+            self.style = {}
