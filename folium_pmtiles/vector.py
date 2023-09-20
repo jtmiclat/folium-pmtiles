@@ -31,10 +31,12 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
         )
     ]
 
-    def __init__(self, url, layer_name=None, options=None):
+    def __init__(self, url, layer_name=None, options=None, **kwargs):
+
+        
         self.layer_name = layer_name if layer_name else "PMTilesVector"
 
-        super().__init__(name=self.layer_name)
+        super().__init__(name=self.layer_name, **kwargs)
 
         self.url = url
         self._name = "PMTilesVector"
