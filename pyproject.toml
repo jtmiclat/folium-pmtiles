@@ -29,6 +29,9 @@ nbqa = "^1.6.1"
 [tool.poetry.group.notebook.dependencies]
 jupyter = "^1.0.0"
 
+[tool.ruff]
+ignore = ["E501"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
