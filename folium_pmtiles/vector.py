@@ -3,7 +3,7 @@ from folium.map import Layer
 from jinja2 import Template
 
 
-class PMTilesVectorBaseMap(JSCSSMixin, Layer):
+class PMTilesVector(JSCSSMixin, Layer):
     """Based of
     https://github.com/python-visualization/folium/blob/56d3665fdc9e7280eae1df1262450e53ec4f5a60/folium/plugins/vectorgrid_protobuf.py
     """
@@ -16,6 +16,9 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
             var {{ this.get_name() }} = protomaps.leafletLayer(
                 {
                     "url":  '{{ this.url }}',
+                    {% if this.style %}
+                        ...protomaps.json_style({{ this.style|tojson}}), 
+                    {% endif %}
                     ...{{ this.options if this.options is string else this.options|tojson }}
                 }
             )
@@ -31,13 +34,15 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
         )
     ]
 
-    def __init__(self, url, layer_name=None, options=None, **kwargs):
+    def __init__(self, url, layer_name=None, style=None, options=None, **kwargs):
         self.layer_name = layer_name if layer_name else "PMTilesVector"
 
         super().__init__(name=self.layer_name, **kwargs)
 
         self.url = url
         self._name = "PMTilesVector"
+        if style is not None:
+            self.style = style
 
         if options is not None:
             self.options = options
