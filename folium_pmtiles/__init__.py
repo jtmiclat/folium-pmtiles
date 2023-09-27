@@ -1,2 +1,2 @@
 from .raster import PMTilesRaster  # noqa
-from .vector import PMTilesMapLibreLayer, PMTilesVectorBaseMap  # noqa
+from .vector import PMTilesMapLibreLayer, PMTilesVector  # noqa

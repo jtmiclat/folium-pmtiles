@@ -3,7 +3,7 @@ from folium.map import Layer
 from jinja2 import Template
 
 
-class PMTilesVectorBaseMap(JSCSSMixin, Layer):
+class PMTilesVector(JSCSSMixin, Layer):
     """Based of
     https://github.com/python-visualization/folium/blob/56d3665fdc9e7280eae1df1262450e53ec4f5a60/folium/plugins/vectorgrid_protobuf.py
     """
@@ -13,9 +13,12 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
             {% macro script(this, kwargs) -%}
 
 
-            var {{ this.get_name() }} = protomaps.leafletLayer(
+            var {{ this.get_name() }} = protomapsL.leafletLayer(
                 {
                     "url":  '{{ this.url }}',
+                    {% if this.style %}
+                        ...protomapsL.json_style({{ this.style|tojson}}), 
+                    {% endif %}
                     ...{{ this.options if this.options is string else this.options|tojson }}
                 }
             )
@@ -26,18 +29,20 @@ class PMTilesVectorBaseMap(JSCSSMixin, Layer):
 
     default_js = [
         (
-            "protomaps",
-            "https://unpkg.com/protomaps@1.23.0/dist/protomaps.min.js",
+            "protomapsL",
+            "https://unpkg.com/protomaps-leaflet@1.24.0/dist/protomaps-leaflet.min.js",
         )
     ]
 
-    def __init__(self, url, layer_name=None, options=None, **kwargs):
+    def __init__(self, url, layer_name=None, style=None, options=None, **kwargs):
         self.layer_name = layer_name if layer_name else "PMTilesVector"
 
         super().__init__(name=self.layer_name, **kwargs)
 
         self.url = url
         self._name = "PMTilesVector"
+        if style is not None:
+            self.style = style
 
         if options is not None:
             self.options = options
