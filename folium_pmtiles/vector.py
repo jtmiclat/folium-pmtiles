@@ -13,11 +13,11 @@ class PMTilesVector(JSCSSMixin, Layer):
             {% macro script(this, kwargs) -%}
 
 
-            var {{ this.get_name() }} = protomaps.leafletLayer(
+            var {{ this.get_name() }} = protomapsL.leafletLayer(
                 {
                     "url":  '{{ this.url }}',
                     {% if this.style %}
-                        ...protomaps.json_style({{ this.style|tojson}}), 
+                        ...protomapsL.json_style({{ this.style|tojson}}), 
                     {% endif %}
                     ...{{ this.options if this.options is string else this.options|tojson }}
                 }
@@ -29,8 +29,8 @@ class PMTilesVector(JSCSSMixin, Layer):
 
     default_js = [
         (
-            "protomaps",
-            "https://unpkg.com/protomaps@1.23.0/dist/protomaps.min.js",
+            "protomapsL",
+            "https://unpkg.com/protomaps-leaflet@1.24.0/dist/protomaps-leaflet.min.js",
         )
     ]
 
