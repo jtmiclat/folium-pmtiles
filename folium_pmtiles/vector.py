@@ -108,9 +108,14 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
             {% macro header(this, kwargs) %}
             <style>
             .maplibregl-popup {
-                max-width: 400px;
                 font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
                 z-index: 651;
+            }
+            .feature-row{
+                margin-bottom: 0.5em;
+                &:not(:last-of-type) {
+                    border-bottom: 1px solid black;
+                }
             }
             </style>
             {% endmacro %}
@@ -124,10 +129,31 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
                 {{ this.get_name() }}.on('load', () => {
                     {{ this.get_name() }}.on('mousemove', {{ this.layer | tojson }}, (e) => { 
                         {{ this.get_name() }}.getCanvas().style.cursor = 'pointer';
+                        const { x, y } = e.point;
+                        const r = 2; // radius around the point
+                        const features = {{ this.get_name() }}.queryRenderedFeatures([
+                            [x - r, y - r],
+                            [x + r, y + r],
+                        ]);
+
                         const {lng, lat}  = e.lngLat;
                         const coordinates = [lng, lat]
-                        const description = JSON.stringify( e.features[0].properties);
-                        popup.setLngLat(coordinates).setHTML(description).addTo({{ this.get_name() }});
+                        const html = features.map(f=>`
+                        <div class="feature-row">
+                            <span>
+                                <strong>${f.layer['source-layer']}</strong>
+                                <span style="fontSize: 0.8em" }> (${f.geometry.type})</span>
+                            </span>
+                            <table>
+                                ${Object.entries(f.properties).map(([key, value]) =>`<tr><td>${key}</td><td style="text-align: right">${value}</td></tr>`).join("")}
+                            </table>
+                        </div>
+                        `).join("")
+                        if(features.length){
+                            popup.setLngLat(e.lngLat).setHTML(html).addTo({{ this.get_name() }});
+                        } else {
+                            popup.remove();
+                        }
                     });
                 });
             {%- endmacro %}
