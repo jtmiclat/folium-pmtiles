@@ -127,7 +127,7 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
                     closeOnClick: false
                 });
                 {{ this.get_name() }}.on('load', () => {
-                    {{ this.get_name() }}.on('mousemove', {{ this.layer | tojson }}, (e) => { 
+                    {{ this.get_name() }}.on('mousemove', (e) => { 
                         {{ this.get_name() }}.getCanvas().style.cursor = 'pointer';
                         const { x, y } = e.point;
                         const r = 2; // radius around the point
@@ -155,6 +155,7 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
                             popup.remove();
                         }
                     });
+                    {{ this.get_name() }}.on('mouseleave', () => {popup.remove();});
                 });
             {%- endmacro %}
             """
