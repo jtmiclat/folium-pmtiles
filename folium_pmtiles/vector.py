@@ -161,8 +161,5 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
             """
     )
 
-    def __init__(self, name=None, layer=None):
-        super().__init__(
-            name=name if name else "PMTilesTooltip",
-        )
-        self.layer = layer
+    def __init__(self, name=None, **kwargs):
+        super().__init__(name=name if name else "PMTilesTooltip", **kwargs)
