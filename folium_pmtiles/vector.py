@@ -1,3 +1,4 @@
+from branca.element import MacroElement
 from folium.elements import JSCSSMixin
 from folium.map import Layer
 from jinja2 import Template
@@ -102,7 +103,7 @@ class PMTilesMapLibreLayer(JSCSSMixin, Layer):
             self.style = {}
 
 
-class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
+class PMTilesMapLibreTooltip(JSCSSMixin, MacroElement):
     _template = Template(
         """
             {% macro header(this, kwargs) %}
@@ -162,4 +163,5 @@ class PMTilesMapLibreTooltip(JSCSSMixin, Layer):
     )
 
     def __init__(self, name=None, **kwargs):
-        super().__init__(name=name if name else "PMTilesTooltip", **kwargs)
+        super().__init__(**kwargs)
+        self._name = name if name else "PMTilesTooltip"
