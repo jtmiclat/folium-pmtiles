@@ -120,19 +120,22 @@ class PMTilesMapLibreTooltip(JSCSSMixin, MacroElement):
             }
             </style>
             {% endmacro %}
-
             {% macro script(this, kwargs) -%}
                 var {{ this.get_name() }} = {{ this._parent.get_name() }}.getMaplibreMap();
-                const popup = new maplibregl.Popup({
+                const popup_{{ this.get_name() }} = new maplibregl.Popup({
                     closeButton: false,
                     closeOnClick: false
                 });
-                {{ this.get_name() }}.on('load', () => {
-                    {{ this.get_name() }}.on('mousemove', (e) => { 
-                        {{ this.get_name() }}.getCanvas().style.cursor = 'pointer';
+
+                function setTooltipForPMTilesMapLibreLayer_{{ this.get_name() }}(maplibreLayer) {
+                    var mlMap = maplibreLayer.getMaplibreMap();
+                    var popup = popup_{{ this.get_name() }};
+
+                    mlMap.on('mousemove', (e) => {
+                        mlMap.getCanvas().style.cursor = 'pointer';
                         const { x, y } = e.point;
                         const r = 2; // radius around the point
-                        const features = {{ this.get_name() }}.queryRenderedFeatures([
+                        const features = mlMap.queryRenderedFeatures([
                             [x - r, y - r],
                             [x + r, y + r],
                         ]);
@@ -151,12 +154,22 @@ class PMTilesMapLibreTooltip(JSCSSMixin, MacroElement):
                         </div>
                         `).join("")
                         if(features.length){
-                            popup.setLngLat(e.lngLat).setHTML(html).addTo({{ this.get_name() }});
+                            popup.setLngLat(e.lngLat).setHTML(html).addTo(mlMap);
                         } else {
                             popup.remove();
                         }
                     });
-                    {{ this.get_name() }}.on('mouseleave', () => {popup.remove();});
+                    mlMap.on('mouseleave', () => {popup.remove();});
+                }
+
+                // maplibre map object
+                {{ this.get_name() }}.on("load", (e) => {
+                    setTooltipForPMTilesMapLibreLayer_{{ this.get_name() }}({{ this._parent.get_name() }});
+                })
+
+                // leaflet map object
+                {{ this._parent._parent.get_name() }}.on("layeradd", (e) => {
+                    setTooltipForPMTilesMapLibreLayer_{{ this.get_name() }}({{ this._parent.get_name() }});
                 });
             {%- endmacro %}
             """
