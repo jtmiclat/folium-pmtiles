@@ -59,17 +59,20 @@ class PMTilesMapLibreLayer(JSCSSMixin, Layer):
     _template = Template(
         """
             {% macro script(this, kwargs) -%}
-            let protocol = new pmtiles.Protocol();
-            maplibregl.addProtocol("pmtiles", protocol.tile);
+            if (!("pmtiles" in maplibregl.config.REGISTERED_PROTOCOLS)) {
+                var protocol = new pmtiles.Protocol();
+                maplibregl.addProtocol("pmtiles", protocol.tile);
+            }
 
-           {{ this._parent.get_name() }}.createPane('overlay');
-           {{ this._parent.get_name() }}.getPane('overlay').style.zIndex = 650;
-           {{ this._parent.get_name() }}.getPane('overlay').style.pointerEvents = 'none';
+            // see: https://github.com/maplibre/maplibre-gl-leaflet/issues/19
+            {{ this._parent.get_name() }}.createPane('overlay_{{ this.get_name() }}');
+            {{ this._parent.get_name() }}.getPane('overlay_{{ this.get_name() }}').style.zIndex = 650;
+            {{ this._parent.get_name() }}.getPane('overlay_{{ this.get_name() }}').style.pointerEvents = 'none';
 
             var {{ this.get_name() }} = L.maplibreGL({
-            pane: 'overlay',
-            style: {{ this.style|tojson}},
-            interactive: true,
+                pane: 'overlay_{{ this.get_name() }}',
+                style: {{ this.style|tojson}},
+                interactive: true,
             }).addTo({{ this._parent.get_name() }});
 
             {%- endmacro %}
