@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "folium-pmtiles"
-version = "0.4.2"
+version = "0.4.3"
 description = "Folium Plugin to Support PMTiles"
 authors = ["Jt Miclat <jtmiclat@gmail.com>"]
 license = "MIT"
